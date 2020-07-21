@@ -27,7 +27,13 @@ f_data.columns = ['gx','gy','gz','ax','ay','az','wx','wy','wz']
 # extracting the y label ( output) of each observation into a separate series
 y_data = r_data.iloc[:22598,-1]
 
+# creating dataframe of f_data and y_data USE future data collecting & write to a file
+f_data['label'] = y_data
+f_data.to_csv(os.path.join('data','filt_data.csv'))
+
+
 # checking for nan cells in any columns
-nan_culumns = check_nan(f_data)
+nan_culumns= check_nan(f_data)
+
 
 
