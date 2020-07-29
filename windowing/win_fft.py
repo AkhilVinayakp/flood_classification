@@ -28,10 +28,11 @@ print(data_l.shape) # 3503,9
 total_windows_l = data_l.shape[0]//25
 #OUT :  140 same as in paper
 
-labels = [0,]
+labels = [0, 0.19]
 
 #creating an empty dataframe to store new data
-nd = pd.DataFrame(np.random.randn(902, 27), columns = [
+a = np.zeros(shape=(902,28))
+nd = pd.DataFrame(a, columns = [
         'gx_mean','gx_median','gx_variance',
         'gy_mean','gy_median','gy_variance',
         'gz_mean','gz_median','gz_variance',
@@ -41,12 +42,10 @@ nd = pd.DataFrame(np.random.randn(902, 27), columns = [
         'wx_mean','wx_median','wx_variance',
         'wy_mean','wy_median','wy_variance',
         'wz_mean','wz_median','wz_variance',
+        'label'
         ])
 
-
-#p,q,r,s,t = [], [], [], [], []
-
-
+k = 0 # keeping the row index of the new dataFrame
 
 # creating time domain data 
 for l in labels:
@@ -54,14 +53,16 @@ for l in labels:
     row_max = dl.shape[0]-1
     # assigning the highest multiple of 50 less than row_max
     fn_row = row_max - row_max % 50
-    i, j, k= 0, 50, 0
+    i, j = 0, 50
     while(True):
-        if j >= fn_row:
+        if j > fn_row:
             break
         for col in dl.columns:
             nd[col+"_mean"][k] = dl[col].iloc[i:j].mean()
             nd[col+"_median"][k] = dl[col].iloc[i:j].median()
             nd[col+"_variance"][k] = dl[col].iloc[i:j].var()
+            nd['label'][k] = l
+
         i = i + 25
         j = j + 25
         k = k + 1
