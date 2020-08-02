@@ -28,24 +28,33 @@ print(data_l.shape) # 3503,9
 total_windows_l = data_l.shape[0]//25
 #OUT :  140 same as in paper
 
-labels = [0,.19]
+labels = [0,]
 
 #creating an empty dataframe to store new data
-a = np.zeros(shape=(902,28))
+a = np.zeros(shape=(902,46))
 nd = pd.DataFrame(a, columns = [
-        'gx_mean','gx_median','gx_variance',
-        'gy_mean','gy_median','gy_variance',
-        'gz_mean','gz_median','gz_variance',
-        'ax_mean','ax_median','ax_variance',
-        'ay_mean','ay_median','ay_variance',
-        'az_mean','az_median','az_variance',
-        'wx_mean','wx_median','wx_variance',
-        'wy_mean','wy_median','wy_variance',
-        'wz_mean','wz_median','wz_variance',
+        'gx_mean','gx_median','gx_variance','gx_fft','gx_spec_energy',
+        'gy_mean','gy_median','gy_variance','gy_fft','gy_spec_energy',
+        'gz_mean','gz_median','gz_variance','gz_fft','gz_spec_energy',
+        'ax_mean','ax_median','ax_variance','ax_fft','ax_spec_energy',
+        'ay_mean','ay_median','ay_variance','ay_fft','ay_spec_energy',
+        'az_mean','az_median','az_variance','az_fft','az_spec_energy',
+        'wx_mean','wx_median','wx_variance','wx_fft','wx_spec_energy',
+        'wy_mean','wy_median','wy_variance','wy_fft','wy_spec_energy',
+        'wz_mean','wz_median','wz_variance','wz_fft','wz_spec_energy',
         'label'
         ])
 
 k = 0 # keeping the row index of the new dataFrame
+
+# defining the functions to calculate the sum of coefficients of fft
+def cal_fft(df):
+    coe = np.fft.rfft(df)
+    with open('fft.txt','w') as f:
+        f.write(str(coe))
+
+
+
 
 # creating time domain data 
 for l in labels:
@@ -62,6 +71,7 @@ for l in labels:
             #print(nd[col+"_mean"][k] )
             nd[col+"_median"][k] = dl[col].iloc[i:j].median()
             nd[col+"_variance"][k] = dl[col].iloc[i:j].var()
+            cal_fft(dl[col].iloc[i:j].values)
             nd['label'][k] = l
             
         
