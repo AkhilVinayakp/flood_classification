@@ -29,11 +29,12 @@ y_data = r_data.iloc[:22598,-1]
 
 # creating dataframe of f_data and y_data USE future data collecting & write to a file
 f_data['label'] = y_data
-f_data.to_csv(os.path.join('data','filt_data.csv'))
+
+f_data.to_csv(os.path.join('data','filt_data.csv'),index=False)
 
 
 # checking for nan cells in any columns
 nan_culumns= check_nan(f_data)
 
-
+    
 
