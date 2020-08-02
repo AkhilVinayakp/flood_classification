@@ -28,7 +28,7 @@ print(data_l.shape) # 3503,9
 total_windows_l = data_l.shape[0]//25
 #OUT :  140 same as in paper
 
-labels = [0, 0.19]
+labels = [0,.19]
 
 #creating an empty dataframe to store new data
 a = np.zeros(shape=(902,28))
@@ -55,18 +55,22 @@ for l in labels:
     fn_row = row_max - row_max % 50
     i, j = 0, 50
     while(True):
-        if j > fn_row:
-            break
+        print(i,j,k)
+        
         for col in dl.columns:
             nd[col+"_mean"][k] = dl[col].iloc[i:j].mean()
+            #print(nd[col+"_mean"][k] )
             nd[col+"_median"][k] = dl[col].iloc[i:j].median()
             nd[col+"_variance"][k] = dl[col].iloc[i:j].var()
             nd['label'][k] = l
-
+            
+        
         i = i + 25
         j = j + 25
         k = k + 1
-        print(i,j)
+        if i >= fn_row:
+            break
+        
           
 
 nd.to_csv("windowed.csv")
